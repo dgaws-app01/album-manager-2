@@ -50,7 +50,7 @@ apiSlice.add = (qs) => {
 
 /** Configuring Store Management Capabilities */
 const createEmptyStore = () => {
-  let newStore = configureStore({
+  const newStore = configureStore({
     middleware: (getDefaultMiddleware) => [...getDefaultMiddleware()],
     reducer: {},
     preloadedState: { storeName: 'masterStore' },
@@ -87,13 +87,17 @@ const createEmptyStore = () => {
     );
   };
 
-  newStore.addSlice = (slice) => {
+  storeElements.addSlice = (slice) => {
     let { name, reducer } = slice;
-    newStore.loadedReducers[name] = reducer;
-    newStore.replaceReducer(combineReducers(newStore.loadedReducers));
+    storeElements.loadedReducers[name] = reducer;
+    newStore.replaceReducer(combineReducers(storeElements.loadedReducers));
   };
 
-  return newStore;
+  const storeKeeper = {
+    read , write, addSlice: storeElements.addSlice
+  }
+
+  return storeKeeper;
 };
 
 export const stores = {
