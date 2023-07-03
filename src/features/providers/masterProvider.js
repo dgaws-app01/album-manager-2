@@ -107,7 +107,8 @@ const createEmptyStore = () => {
       storeElements.dispatcher(act)
     },
 
-    addSlice : storeElements.addSlice
+    addSlice : storeElements.addSlice,
+    provider : storeElements.provider
 
   };
 
@@ -117,8 +118,6 @@ const createEmptyStore = () => {
 const stores = {
   master: createEmptyStore(),
 };
-
-
 
 
 const $0 = (o, n) => {
@@ -166,7 +165,19 @@ const modifyStore = (props) => {
   }
 };
 
+const FinalProvider = ({children}) => {
+  let storeList = Object.keys(stores)
+  storeList.reverse()
+  let provs = <>{children}</>
+  storeList.forEach(storNm=> {
+    let {provider} = stores[storNm]
+    provs = <provider>{provs}</provider>
+  })
 
-export {modifyStore}
+  return provs
+}
+
+
+export {modifyStore, FinalProvider}
 
 //const createStoreAcessManager =
