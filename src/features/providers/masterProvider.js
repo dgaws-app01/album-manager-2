@@ -56,10 +56,36 @@ const createEmptyStore = () => {
     preloadedState: { storeName: 'masterStore' },
   });
 
-  newStore.loadedReducers = {};
-  newStore.storeContext = React.createContext();
-  newStore.selectorF = createSelectorHook(newStore.storeContext);
-  newStore.dispatcherF = createDispatchHook(newStore.storeContext);
+  let storeElements = {};
+
+  storeElements.loadedReducers = {};
+  storeElements.storeContext = React.createContext();
+  storeElements.selector = createSelectorHook(storeElements.storeContext);
+  storeElements.dispatchF = createDispatchHook(storeElements.storeContext);
+  storeElements.dispatcher = null;
+
+  let dispatcherExtractor = (storeElements.dispatcherExtractor = ({
+    children,
+  }) => {
+    storeElements.dispatcher = storeElements.dispatchF();
+    return <>{children}</>;
+  });
+
+  storeElements.provider = ({ children }) => {
+    let provider = (
+      <Provider store={newStore} context={storeElements.storeContext}>
+        {children}
+      </Provider>
+    );
+
+    return (
+      <>
+        <provider>
+          <dispatcherExtractor></dispatcherExtractor>
+        </provider>
+      </>
+    );
+  };
 
   newStore.addSlice = (slice) => {
     let { name, reducer } = slice;
