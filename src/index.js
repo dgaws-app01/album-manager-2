@@ -1,5 +1,6 @@
 import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import {modifyStore} from './features/providers/masterProvider'
 
 import App from './App';
 

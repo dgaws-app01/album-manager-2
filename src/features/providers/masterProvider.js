@@ -87,6 +87,9 @@ const createEmptyStore = () => {
     );
   };
 
+  /**
+   * @param {Slice} slice
+   */
   storeElements.addSlice = (slice) => {
     let { name, reducer } = slice;
     storeElements.loadedReducers[name] = reducer;
@@ -94,15 +97,29 @@ const createEmptyStore = () => {
   };
 
   const storeKeeper = {
-    read , write, addSlice: storeElements.addSlice
-  }
+    get state() {
+      return storeElements.selector((state) => state);
+    },
+    set state(act){
+      storeElements.dispatcher(act)
+    },
+    setStateViaAction(act){
+      storeElements.dispatcher(act)
+    },
+
+    addSlice : storeElements.addSlice
+
+  };
 
   return storeKeeper;
 };
 
-export const stores = {
+const stores = {
   master: createEmptyStore(),
 };
+
+
+
 
 const $0 = (o, n) => {
   let name = Object.keys(o)[0];
@@ -111,7 +128,7 @@ const $0 = (o, n) => {
   return out;
 };
 
-export const modifyStore = (props) => {
+const modifyStore = (props) => {
   const { storeName, store } = $0(props, ['storeName', 'store']);
   const retVal = {};
   //const store = props[storeName];
@@ -131,6 +148,7 @@ export const modifyStore = (props) => {
     const targetStore = (stores[storeName] =
       stores[storeName] || createEmptyStore());
     targetStore.addSlice(slice);
+      
 
     // console.log({
     //   storeName,
@@ -147,5 +165,8 @@ export const modifyStore = (props) => {
     };
   }
 };
+
+
+export {modifyStore}
 
 //const createStoreAcessManager =
