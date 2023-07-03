@@ -58,8 +58,8 @@ const createEmptyStore = () => {
 
   newStore.loadedReducers = {};
   newStore.storeContext = React.createContext();
-  newStore.useSelect = createSelectorHook(newStore.storeContext);
-  newStore.useDispatch = createDispatchHook(newStore.storeContext);
+  newStore.selectorF = createSelectorHook(newStore.storeContext);
+  newStore.dispatcherF = createDispatchHook(newStore.storeContext);
 
   newStore.addSlice = (slice) => {
     let { name, reducer } = slice;
