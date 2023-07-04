@@ -61,7 +61,7 @@ const createEmptyStore = () => {
   const loadedReducers = {};
 
   const storeContext = React.createContext();
-  const dispatchF = createDispatchHook(storeContext);
+  storeElements.dispatchF = createDispatchHook(storeContext);
   storeElements.selector = createSelectorHook(storeContext);
   storeElements.dispatcher = null;
 
@@ -74,7 +74,7 @@ const createEmptyStore = () => {
   };
 
   function DispatcherExtractor({ children }) {
-    storeElements.dispatcher = dispatchF();
+    storeElements.dispatcher = storeElements.dispatchF();
     return <>{children}</>;
   }
 
@@ -167,12 +167,13 @@ const FinalProvider = ({ children }) => {
 const Api = apiSlice;
 /** Test - To be deleted */
 
-let {actions : {testAction_01}} = modifyStore({
+let stMod = modifyStore({
   master: {
     testResucer: {
       initialState: { selectedItem: 0, items: ['L', 'P', 'H'] },
       actions: {
         testAction_01: (state, act) => {
+          console.log({when:"performing action 'testAction_01'", params : {state, act}})
           state.curtime = new Date().getTime();
           return state;
         },
@@ -181,7 +182,9 @@ let {actions : {testAction_01}} = modifyStore({
   },
 });
 
-console.log(testAction_01);
+console.log(stMod);
+stores.master.state = stMod.actions.testAction_01({name: "aabbcc", ids: [3,7]})
+console.log({when:"after performing action 'testAction_01'", v : stores.master.state})
 
 Api.add({
   q1: { respH: (x) => console.log(x) },
