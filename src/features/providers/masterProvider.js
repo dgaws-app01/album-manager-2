@@ -167,7 +167,7 @@ const FinalProvider = ({ children }) => {
 const Api = apiSlice;
 /** Test - To be deleted */
 
-let stMod = modifyStore({
+let {actions : {testAction_01}} = modifyStore({
   master: {
     testResucer: {
       initialState: { selectedItem: 0, items: ['L', 'P', 'H'] },
@@ -181,7 +181,7 @@ let stMod = modifyStore({
   },
 });
 
-console.log(stMod);
+console.log(testAction_01);
 
 Api.add({
   q1: { respH: (x) => console.log(x) },
