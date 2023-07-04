@@ -65,26 +65,26 @@ const createEmptyStore = () => {
   storeElements.dispatchF = createDispatchHook(storeElements.storeContext);
   storeElements.dispatcher = null;
 
-  let DispatcherExtractor = (storeElements.DispatcherExtractor = ({
+  const DispatcherExtractor = (storeElements.DispatcherExtractor = ({
     children,
   }) => {
+    console.log({comp: "DispatcherExtractor", children})
     storeElements.dispatcher = storeElements.dispatchF();
     return <>{children}</>;
   });
 
   storeElements.StoreProvider = ({ children }) => {
-    let StoreProvider = (
+    console.log({comp: "StoreProvider", children})
+    const StoreProvider = () => (
       <Provider store={newStore} context={storeElements.storeContext}>
         {children}
       </Provider>
     );
 
     return (
-      <>
-        <StoreProvider>
+      <StoreProvider>
           <DispatcherExtractor></DispatcherExtractor>
         </StoreProvider>
-      </>
     );
   };
 
@@ -181,9 +181,9 @@ const FinalProvider = ({children}) => {
 const Api = apiSlice
 /** Test - To be deleted */
 
-Api.add({
-  q1: {respH : (x) => console.log(x)}
-})
+// Api.add({
+//   q1: {respH : (x) => console.log(x)}
+// })
 
 /** Delete till here  */
 
