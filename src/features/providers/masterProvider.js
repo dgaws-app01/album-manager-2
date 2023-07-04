@@ -105,8 +105,8 @@ const createEmptyStore = () => {
       //storeElements.dispatcher(act);
     },
     setStateViaAction(act) {
-      //newStore.dispatch(act)
-      storeElements.dispatcher(act);
+      newStore.dispatch(act)
+      //storeElements.dispatcher(act);
     },
 
     addSlice: storeElements.addSlice,
