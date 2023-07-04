@@ -112,6 +112,7 @@ const createEmptyStore = () => {
     addSlice: storeElements.addSlice,
     StoreProvider: storeElements.StoreProvider,
     rowStore: newStore,
+    
   };
 
   return storeKeeper;
