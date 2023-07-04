@@ -22,7 +22,7 @@ const apiSlice = createApi({
 });
 
 apiSlice.add = (qs) => {
-  api.injectEndpoints({
+  apiSlice.injectEndpoints({
     overrideExisting: false,
     endpoints: (builder) => {
       let endPoints = {};
@@ -177,7 +177,7 @@ const FinalProvider = ({children}) => {
   return provs
 }
 
-
-export {modifyStore, FinalProvider}
+const api = apiSlice
+export {modifyStore, FinalProvider, api}
 
 //const createStoreAcessManager =
