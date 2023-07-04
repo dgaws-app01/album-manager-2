@@ -59,7 +59,7 @@ const createEmptyStore = () => {
   let storeElements = {};
 
   const loadedReducers = {};
-
+  
   const storeContext = React.createContext();
   const dispatchF = createDispatchHook(storeContext);
   storeElements.selector = createSelectorHook(storeContext);
@@ -91,6 +91,8 @@ const createEmptyStore = () => {
    */
   storeElements.addSlice = (slice) => {
     let { name, reducer } = slice;
+    //loadedSlices[name] = slice
+    console.log({ when : "adding new Slice", existingStoreReducers : loadedReducers[name]})
     loadedReducers[name] = reducer;
     newStore.replaceReducer(combineReducers(loadedReducers));
   };
@@ -145,17 +147,7 @@ const modifyStore = (props) => {
 
     const targetStore = (stores[storeName] =
       stores[storeName] || createEmptyStore());
-    targetStore.addSlice(slice);
-
-    // console.log({
-    //   storeName,
-    //   store,
-    //   name,
-    //   initialState,
-    //   actions,
-    //   acts: slice.actions,
-    //   reds: slice.caseReducers,
-    // });
+    targetStore.addSlice(slice);   
 
     return {
       actions: slice.actions,
@@ -178,9 +170,25 @@ const FinalProvider = ({ children }) => {
 const Api = apiSlice;
 /** Test - To be deleted */
 
-modifyStore({ master: { red1: {
-  initialState : {selectedItem : 0, items : ["L", "P", "H"]}
+let stMod = modifyStore(
+  { master: 
+    { red1: {
+        initialState : {selectedItem : 0, items : ["L", "P", "H"]},
+        actions: {act1 : (state, act) => {
+          state.curtime = new Date().getTime()
+          return state
+    }}
 } } });
+
+let stMod2 = modifyStore({ master: { red1: {
+  initialState : {selectedItem : 0, items : ["L", "P", "H"]},
+  actions: {act2 : (state, act) => {
+    state.curtime = new Date().getDay()
+    return state
+  }}
+} } });
+
+console.log(stMod2)
 
 Api.add({
   q1: { respH: (x) => console.log(x) },
