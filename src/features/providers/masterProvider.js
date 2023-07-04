@@ -65,15 +65,15 @@ const createEmptyStore = () => {
   storeElements.dispatchF = createDispatchHook(storeElements.storeContext);
   storeElements.dispatcher = null;
 
-  let dispatcherExtractor = (storeElements.dispatcherExtractor = ({
+  let DispatcherExtractor = (storeElements.DispatcherExtractor = ({
     children,
   }) => {
     storeElements.dispatcher = storeElements.dispatchF();
     return <>{children}</>;
   });
 
-  storeElements.Provider = ({ children }) => {
-    let provider = (
+  storeElements.StoreProvider = ({ children }) => {
+    let StoreProvider = (
       <Provider store={newStore} context={storeElements.storeContext}>
         {children}
       </Provider>
@@ -81,9 +81,9 @@ const createEmptyStore = () => {
 
     return (
       <>
-        <provider>
-          <dispatcherExtractor></dispatcherExtractor>
-        </provider>
+        <StoreProvider>
+          <DispatcherExtractor></DispatcherExtractor>
+        </StoreProvider>
       </>
     );
   };
@@ -109,7 +109,7 @@ const createEmptyStore = () => {
     },
 
     addSlice : storeElements.addSlice,
-    Provider : storeElements.Provider
+    StoreProvider : storeElements.StoreProvider
 
   };
 
@@ -171,8 +171,8 @@ const FinalProvider = ({children}) => {
   storeList.reverse()
   let provs = <ApiProvider api={apiSlice}>{children}</ApiProvider>
   storeList.forEach(storNm=> {
-    let {Provider} = stores[storNm]
-    provs = <Provider>{provs}</Provider>
+    let {StoreProvider} = stores[storNm]
+    provs = <StoreProvider>{provs}</StoreProvider>
   })
 
   return provs
