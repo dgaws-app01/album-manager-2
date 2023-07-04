@@ -41,7 +41,6 @@ apiSlice.add = (qs) => {
         //       response.status === 200 && !result.isError,
         //   }),
         // });
-
       });
 
       return endPoints;
@@ -59,32 +58,37 @@ const createEmptyStore = () => {
 
   let storeElements = {};
 
-  storeElements.loadedReducers = {};
-  storeElements.storeContext = React.createContext();
-  storeElements.selector = createSelectorHook(storeElements.storeContext);
-  storeElements.dispatchF = createDispatchHook(storeElements.storeContext);
+  const loadedReducers = {};
+
+  const storeContext = React.createContext();
+  const dispatchF = createDispatchHook(storeContext);
+  storeElements.selector = createSelectorHook(storeContext);
   storeElements.dispatcher = null;
 
-  const DispatcherExtractor = (storeElements.DispatcherExtractor = ({
-    children,
-  }) => {
-    console.log({comp: "DispatcherExtractor", children})
-    storeElements.dispatcher = storeElements.dispatchF();
-    return <>{children}</>;
-  });
-
-  storeElements.StoreProvider = ({ children }) => {
-    console.log({comp: "StoreProvider", children})
-    const StoreProvider = () => (
-      <Provider store={newStore} context={storeElements.storeContext}>
+  const StoreProvider = ({ children }) => {
+    return (
+      <Provider store={newStore} context={storeContext}>
         {children}
       </Provider>
     );
+  };
 
+  function DispatcherExtractor({ children }) {
+    console.log({
+      comp: 'DispatcherExtractor',
+      children,
+      dst: dispatchF,
+    });
+    storeElements.dispatcher = dispatchF();
+    return <>{children}</>;
+  }
+
+  storeElements.StoreProvider = ({ children }) => {
+    console.log({ comp: 'StoreProvider', children });
     return (
       <StoreProvider>
-          <DispatcherExtractor></DispatcherExtractor>
-        </StoreProvider>
+        <DispatcherExtractor>{children}</DispatcherExtractor>
+      </StoreProvider>
     );
   };
 
@@ -93,24 +97,23 @@ const createEmptyStore = () => {
    */
   storeElements.addSlice = (slice) => {
     let { name, reducer } = slice;
-    storeElements.loadedReducers[name] = reducer;
-    newStore.replaceReducer(combineReducers(storeElements.loadedReducers));
+    loadedReducers[name] = reducer;
+    newStore.replaceReducer(combineReducers(loadedReducers));
   };
 
   const storeKeeper = {
     get state() {
       return storeElements.selector((state) => state);
     },
-    set state(act){
-      storeElements.dispatcher(act)
+    set state(act) {
+      storeElements.dispatcher(act);
     },
-    setStateViaAction(act){
-      storeElements.dispatcher(act)
+    setStateViaAction(act) {
+      storeElements.dispatcher(act);
     },
 
-    addSlice : storeElements.addSlice,
-    StoreProvider : storeElements.StoreProvider
-
+    addSlice: storeElements.addSlice,
+    StoreProvider: storeElements.StoreProvider,
   };
 
   return storeKeeper;
@@ -120,11 +123,10 @@ const stores = {
   master: createEmptyStore(),
 };
 
-
 const $0 = (o, n) => {
   let name = Object.keys(o)[0];
   let out = { [n[0]]: name, [n[1]]: o[name] };
-  console.log(out);
+  //console.log(out);
   return out;
 };
 
@@ -148,7 +150,6 @@ const modifyStore = (props) => {
     const targetStore = (stores[storeName] =
       stores[storeName] || createEmptyStore());
     targetStore.addSlice(slice);
-      
 
     // console.log({
     //   storeName,
@@ -166,27 +167,31 @@ const modifyStore = (props) => {
   }
 };
 
-const FinalProvider = ({children}) => {
-  let storeList = Object.keys(stores)
-  storeList.reverse()
-  let provs = <ApiProvider api={apiSlice}>{children}</ApiProvider>
-  storeList.forEach(storNm=> {
-    let {StoreProvider} = stores[storNm]
-    provs = <StoreProvider>{provs}</StoreProvider>
-  })
+const FinalProvider = ({ children }) => {
+  let storeList = Object.keys(stores);
+  storeList.reverse();
+  let provs = <ApiProvider api={apiSlice}>{children}</ApiProvider>;
+  storeList.forEach((storNm) => {
+    let { StoreProvider } = stores[storNm];
+    provs = <StoreProvider>{provs}</StoreProvider>;
+  });
 
-  return provs
-}
+  return provs;
+};
 
-const Api = apiSlice
+const Api = apiSlice;
 /** Test - To be deleted */
 
-// Api.add({
-//   q1: {respH : (x) => console.log(x)}
-// })
+modifyStore({ master: { red1: {
+  initialState : {selectedItem : 0, items : ["L", "P", "H"]}
+} } });
+
+Api.add({
+  q1: { respH: (x) => console.log(x) },
+});
 
 /** Delete till here  */
 
-export {modifyStore, FinalProvider, Api, stores}
+export { modifyStore, FinalProvider, Api, stores };
 
 //const createStoreAcessManager =
