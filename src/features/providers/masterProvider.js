@@ -93,6 +93,17 @@ const createEmptyStore = () => {
     let { name, reducer } = slice;    
     loadedReducers[name] = reducer;
     newStore.replaceReducer(combineReducers(loadedReducers));
+    
+    let {actions} = slice
+    const retActs = {}
+    Object.keys(actions).forEach(actNm=>{
+      retActs[actNm] = function (payload){
+        const act = actions[actNm]
+        storeElements.dispatcher(act(payload))
+      }
+    })
+    return retActs
+
   };
 
   const storeKeeper = {
@@ -108,11 +119,12 @@ const createEmptyStore = () => {
       newStore.dispatch(act)
       //storeElements.dispatcher(act);
     },
+    get actionDispatcher(){return storeElements.dispatcher},    
 
     addSlice: storeElements.addSlice,
     StoreProvider: storeElements.StoreProvider,
     rowStore: newStore,
-    
+
   };
 
   return storeKeeper;
@@ -148,11 +160,9 @@ const modifyStore = (props) => {
 
     const targetStore = (stores[storeName] =
       stores[storeName] || createEmptyStore());
-    targetStore.addSlice(slice);
+    const retActs = targetStore.addSlice(slice);
 
-    return {
-      actions: slice.actions,
-    };
+    return retActs
   }
 };
 
@@ -173,7 +183,7 @@ const Api = apiSlice;
 
 let stMod = modifyStore({
   master: {
-    testResucer: {
+    testReducer: {
       initialState: { selectedItem: 0, items: ['L', 'P', 'H'] },
       actions: {
         testAction_01: (state, act) => {
