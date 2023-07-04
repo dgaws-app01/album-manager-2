@@ -27,20 +27,21 @@ apiSlice.add = (qs) => {
     endpoints: (builder) => {
       let endPoints = {};
       let apis = qs || {};
-      Object.keys(apis).forEach((k) => {
-        let { name, respH } = apis[k];
+      Object.keys(apis).forEach((endPointName) => {
+        let { respH } = apis[endPointName];
         if (!respH) respH = (r) => r.json();
 
-        endPoints[name] = builder.mutation({
-          query: ({ question }) => ({
-            //url: `${name || ''}`,
-            method: 'POST',
-            body: question,
-            responseHandler: respH,
-            validateStatus: (response, result) =>
-              response.status === 200 && !result.isError,
-          }),
-        });
+        // endPoints[endPointName] = builder.mutation({
+        //   query: ({ question }) => ({
+        //     //url: `${name || ''}`,
+        //     method: 'POST',
+        //     body: question,
+        //     responseHandler: respH,
+        //     validateStatus: (response, result) =>
+        //       response.status === 200 && !result.isError,
+        //   }),
+        // });
+
       });
 
       return endPoints;
@@ -180,7 +181,9 @@ const FinalProvider = ({children}) => {
 const Api = apiSlice
 /** Test - To be deleted */
 
-Api.add()
+Api.add({
+  q1: {respH : (x) => console.log(x)}
+})
 
 /** Delete till here  */
 
