@@ -78,6 +78,7 @@ const createEmptyStore = () => {
     return <>{children}</>;
   }
 
+
   storeElements.StoreProvider = ({ children }) => {
     return (
       <StoreProvider>
@@ -180,26 +181,8 @@ const FinalProvider = ({ children }) => {
 
 const Api = apiSlice;
 /** Test - To be deleted */
-
-let stMod = modifyStore({
-  master: {
-    testReducer: {
-      initialState: { selectedItem: 0, items: ['L', 'P', 'H'] },
-      actions: {
-        testAction_01: (state, act) => {
-          console.log({when:"performing action 'testAction_01'", params : {state, act}})
-          state.curtime = new Date().getTime();
-          return state;
-        },
-      },
-    },
-  },
-});
-
-console.log(stMod);
-stores.master.state = stMod.actions.testAction_01({name: "aabbcc", ids: [3,7]})
-//console.log({when:"after performing action 'testAction_01'", v : stores.master.state})
-
+stores.master.state})
+//stMod.testAction_01({name: "aabbcc", ids: [3,7]})
 Api.add({
   q1: { respH: (x) => console.log(x) },
 });
