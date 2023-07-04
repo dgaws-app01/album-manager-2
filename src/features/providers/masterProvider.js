@@ -177,7 +177,7 @@ const FinalProvider = ({children}) => {
   return provs
 }
 
-const api = apiSlice
-export {modifyStore, FinalProvider, api}
+const Api = apiSlice
+export {modifyStore, FinalProvider, Api, stores}
 
 //const createStoreAcessManager =

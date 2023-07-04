@@ -1,5 +1,8 @@
 import React from "react";
+import {Api, stores} from './features/providers/masterProvider'
 import "./style.css";
+
+console.log({Api, stores})
 
 export default function App() {
   return (
