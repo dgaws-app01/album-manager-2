@@ -73,8 +73,8 @@ const createEmptyStore = () => {
     );
   };
 
-  function DispatcherExtractor({ children }) {
-    storeElements.dispatcher = storeElements.dispatchF();
+  const DispatcherExtractor = ({ children }) => {
+    storeElements.dispatcher = storeElements.dispatchF();    
     return <>{children}</>;
   }
 
@@ -100,9 +100,12 @@ const createEmptyStore = () => {
       return storeElements.selector((state) => state);
     },
     set state(act) {
-      storeElements.dispatcher(act);
+      //console.log(storeElements)
+      newStore.dispatch(act)
+      //storeElements.dispatcher(act);
     },
     setStateViaAction(act) {
+      //newStore.dispatch(act)
       storeElements.dispatcher(act);
     },
 
@@ -184,7 +187,7 @@ let stMod = modifyStore({
 
 console.log(stMod);
 stores.master.state = stMod.actions.testAction_01({name: "aabbcc", ids: [3,7]})
-console.log({when:"after performing action 'testAction_01'", v : stores.master.state})
+//console.log({when:"after performing action 'testAction_01'", v : stores.master.state})
 
 Api.add({
   q1: { respH: (x) => console.log(x) },
