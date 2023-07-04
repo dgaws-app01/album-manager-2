@@ -74,17 +74,11 @@ const createEmptyStore = () => {
   };
 
   function DispatcherExtractor({ children }) {
-    console.log({
-      comp: 'DispatcherExtractor',
-      children,
-      dst: dispatchF,
-    });
     storeElements.dispatcher = dispatchF();
     return <>{children}</>;
   }
 
   storeElements.StoreProvider = ({ children }) => {
-    console.log({ comp: 'StoreProvider', children });
     return (
       <StoreProvider>
         <DispatcherExtractor>{children}</DispatcherExtractor>
@@ -114,6 +108,8 @@ const createEmptyStore = () => {
 
     addSlice: storeElements.addSlice,
     StoreProvider: storeElements.StoreProvider,
+    rowStore : newStore
+
   };
 
   return storeKeeper;
