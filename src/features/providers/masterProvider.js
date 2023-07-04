@@ -59,7 +59,7 @@ const createEmptyStore = () => {
   let storeElements = {};
 
   const loadedReducers = {};
-  
+
   const storeContext = React.createContext();
   const dispatchF = createDispatchHook(storeContext);
   storeElements.selector = createSelectorHook(storeContext);
@@ -90,9 +90,7 @@ const createEmptyStore = () => {
    * @param {Slice} slice
    */
   storeElements.addSlice = (slice) => {
-    let { name, reducer } = slice;
-    //loadedSlices[name] = slice
-    console.log({ when : "adding new Slice", existingStoreReducers : loadedReducers[name]})
+    let { name, reducer } = slice;    
     loadedReducers[name] = reducer;
     newStore.replaceReducer(combineReducers(loadedReducers));
   };
@@ -110,8 +108,7 @@ const createEmptyStore = () => {
 
     addSlice: storeElements.addSlice,
     StoreProvider: storeElements.StoreProvider,
-    rowStore : newStore
-
+    rowStore: newStore,
   };
 
   return storeKeeper;
@@ -147,7 +144,7 @@ const modifyStore = (props) => {
 
     const targetStore = (stores[storeName] =
       stores[storeName] || createEmptyStore());
-    targetStore.addSlice(slice);   
+    targetStore.addSlice(slice);
 
     return {
       actions: slice.actions,
@@ -170,25 +167,21 @@ const FinalProvider = ({ children }) => {
 const Api = apiSlice;
 /** Test - To be deleted */
 
-let stMod = modifyStore(
-  { master: 
-    { red1: {
-        initialState : {selectedItem : 0, items : ["L", "P", "H"]},
-        actions: {act1 : (state, act) => {
-          state.curtime = new Date().getTime()
-          return state
-    }}
-} } });
+let stMod = modifyStore({
+  master: {
+    testResucer: {
+      initialState: { selectedItem: 0, items: ['L', 'P', 'H'] },
+      actions: {
+        testAction_01: (state, act) => {
+          state.curtime = new Date().getTime();
+          return state;
+        },
+      },
+    },
+  },
+});
 
-let stMod2 = modifyStore({ master: { red1: {
-  initialState : {selectedItem : 0, items : ["L", "P", "H"]},
-  actions: {act2 : (state, act) => {
-    state.curtime = new Date().getDay()
-    return state
-  }}
-} } });
-
-console.log(stMod2)
+console.log(stMod);
 
 Api.add({
   q1: { respH: (x) => console.log(x) },
