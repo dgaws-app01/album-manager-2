@@ -31,9 +31,9 @@ apiSlice.add = (qs) => {
         let { name, respH } = apis[k];
         if (!respH) respH = (r) => r.json();
 
-        endPoints[k] = builder.mutation({
+        endPoints[name] = builder.mutation({
           query: ({ question }) => ({
-            url: `${name || ''}`,
+            //url: `${name || ''}`,
             method: 'POST',
             body: question,
             responseHandler: respH,
@@ -177,12 +177,13 @@ const FinalProvider = ({children}) => {
   return provs
 }
 
+const Api = apiSlice
 /** Test - To be deleted */
 
+Api.add()
 
 /** Delete till here  */
 
-const Api = apiSlice
 export {modifyStore, FinalProvider, Api, stores}
 
 //const createStoreAcessManager =
