@@ -72,7 +72,7 @@ const createEmptyStore = () => {
     return <>{children}</>;
   });
 
-  storeElements.provider = ({ children }) => {
+  storeElements.Provider = ({ children }) => {
     let provider = (
       <Provider store={newStore} context={storeElements.storeContext}>
         {children}
@@ -109,7 +109,7 @@ const createEmptyStore = () => {
     },
 
     addSlice : storeElements.addSlice,
-    provider : storeElements.provider
+    Provider : storeElements.Provider
 
   };
 
@@ -171,8 +171,8 @@ const FinalProvider = ({children}) => {
   storeList.reverse()
   let provs = <ApiProvider api={apiSlice}>{children}</ApiProvider>
   storeList.forEach(storNm=> {
-    let {provider} = stores[storNm]
-    provs = <provider>{provs}</provider>
+    let {Provider} = stores[storNm]
+    provs = <Provider>{provs}</Provider>
   })
 
   return provs
