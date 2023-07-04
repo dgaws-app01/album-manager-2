@@ -168,7 +168,7 @@ const modifyStore = (props) => {
 const FinalProvider = ({children}) => {
   let storeList = Object.keys(stores)
   storeList.reverse()
-  let provs = <>{children}</>
+  let provs = <ApiProvider api={apiSlice}>{children}</ApiProvider>
   storeList.forEach(storNm=> {
     let {provider} = stores[storNm]
     provs = <provider>{provs}</provider>
