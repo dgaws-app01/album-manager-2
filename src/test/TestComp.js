@@ -1,5 +1,13 @@
 import React from "react";
-import {modifyStore, stores} from '../features/providers/masterProvider'
+import {modifyStore, stores, Api} from '../features/providers/masterProvider'
+
+console.log({
+  endpointsInReturn: Api.add({
+    q1: { respH: (x) => console.log(x) },
+  }),
+});
+
+console.log({ Api });
 
 
 let stMod = modifyStore({
@@ -53,7 +61,7 @@ let {testAction_99, testAction_100} = stMod2
 testAction_01({curtime : new Date().getTime() })
 testAction_99({gameDay: "lion", game: "footb"})
 let f = function (){ testAction_02({curtime : new Date().getTime() }) }
-window.setInterval(f, 5000 )
+window.setTimeout(f, 5000 )
 let f2 = function (){ testAction_100({name: "aabbcc", ids: [3,7]}) }
 window.setTimeout(f2, 5000 )
 

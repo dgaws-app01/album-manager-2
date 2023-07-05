@@ -1,7 +1,7 @@
 /** Imports ... */
 import React from 'react';
-import { configureStore, createAction, createSlice } from '@reduxjs/toolkit';
-import { legacy_createStore, applyMiddleware, combineReducers } from 'redux';
+import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { combineReducers } from 'redux';
 import { Provider, createSelectorHook, createDispatchHook } from 'react-redux';
 import {
   createApi,
@@ -22,7 +22,7 @@ const apiSlice = createApi({
 });
 
 apiSlice.add = (qs) => {
-  apiSlice.injectEndpoints({
+  const endpointsInReturn = apiSlice.injectEndpoints({
     overrideExisting: false,
     endpoints: (builder) => {
       let endPoints = {};
@@ -31,22 +31,25 @@ apiSlice.add = (qs) => {
         let { respH } = apis[endPointName];
         if (!respH) respH = (r) => r.json();
 
-        // endPoints[endPointName] = builder.mutation({
-        //   query: ({ question }) => ({
-        //     //url: `${name || ''}`,
-        //     method: 'POST',
-        //     body: question,
-        //     responseHandler: respH,
-        //     validateStatus: (response, result) =>
-        //       response.status === 200 && !result.isError,
-        //   }),
-        // });
+        endPoints[endPointName] = builder.mutation({
+          query: ({ question }) => ({
+            //url: `${name || ''}`,
+            method: 'POST',
+            body: question,
+            responseHandler: respH,
+            validateStatus: (response, result) =>
+              response.status === 200 && !result.isError,
+          }),
+        });
       });
 
       return endPoints;
     },
   });
+  return endpointsInReturn;
 };
+
+
 
 /** Configuring Store Management Capabilities */
 const createEmptyStore = () => {
@@ -74,10 +77,9 @@ const createEmptyStore = () => {
   };
 
   const DispatcherExtractor = ({ children }) => {
-    storeElements.dispatcher = storeElements.dispatchF();    
+    storeElements.dispatcher = storeElements.dispatchF();
     return <>{children}</>;
-  }
-
+  };
 
   storeElements.StoreProvider = ({ children }) => {
     return (
@@ -91,40 +93,39 @@ const createEmptyStore = () => {
    * @param {Slice} slice
    */
   storeElements.addSlice = (slice) => {
-    let { name, reducer } = slice;    
+    let { name, reducer } = slice;
     loadedReducers[name] = reducer;
     newStore.replaceReducer(combineReducers(loadedReducers));
-    
-    let {actions} = slice
-    const retActs = {}
-    Object.keys(actions).forEach(actNm=>{
-      retActs[actNm] = function (payload){
-        const act = actions[actNm]        
-        newStore.dispatch(act(payload))
-      }
-    })
-    return retActs
 
+    let { actions } = slice;
+    const retActs = {};
+    Object.keys(actions).forEach((actNm) => {
+      retActs[actNm] = function (payload) {
+        const act = actions[actNm];
+        newStore.dispatch(act(payload));
+      };
+    });
+    return retActs;
   };
- 
 
   const storeKeeper = {
     get state() {
-      return storeElements.selector((state) => state);      
+      return storeElements.selector((state) => state);
     },
     set state(act) {
-      newStore.dispatch(act)      
+      newStore.dispatch(act);
     },
     setStateViaAction(act) {
-      newStore.dispatch(act)
+      newStore.dispatch(act);
       //storeElements.dispatcher(act);
     },
-    get actionDispatcher(){return storeElements.dispatcher},    
+    get actionDispatcher() {
+      return storeElements.dispatcher;
+    },
 
     addSlice: storeElements.addSlice,
     StoreProvider: storeElements.StoreProvider,
     rowStore: newStore,
-
   };
 
   return storeKeeper;
@@ -155,18 +156,18 @@ const modifyStore = (props) => {
     const targetStore = (stores[storeName] =
       stores[storeName] || createEmptyStore());
 
-    const actions2 = {}  
-    Object.keys(actions).forEach(actNm => {  
-      let actF = actions[actNm]  
+    const actions2 = {};
+    Object.keys(actions).forEach((actNm) => {
+      let actF = actions[actNm];
       let actF2 = (state, action) => {
-        let state2 = JSON.parse(JSON.stringify(state))
+        let state2 = JSON.parse(JSON.stringify(state));
         //console.log(state2)
-        let {payload} = action  
-        actF(payload, state2)  
-        return state2  
-      }
-      actions2[actNm] = actF2
-    })
+        let { payload } = action;
+        actF(payload, state2);
+        return state2;
+      };
+      actions2[actNm] = actF2;
+    });
 
     const slice = createSlice({
       name,
@@ -174,10 +175,9 @@ const modifyStore = (props) => {
       reducers: actions2,
     });
 
-
     const retActs = targetStore.addSlice(slice);
-    
-    return retActs
+
+    return retActs;
   }
 };
 
@@ -193,16 +193,15 @@ const FinalProvider = ({ children }) => {
   return provs;
 };
 
-const Api = apiSlice;
+const Api =  apiSlice
+const addApi = apiSlice.add
+
 /** Test - To be deleted */
 //stores.master.state})
 //stMod.testAction_01({name: "aabbcc", ids: [3,7]})
-Api.add({
-  q1: { respH: (x) => console.log(x) },
-});
 
 /** Delete till here  */
 
-export { modifyStore, FinalProvider, Api, stores };
+export { FinalProvider, Api, modifyStore, addApi , stores };
 
 //const createStoreAcessManager =
