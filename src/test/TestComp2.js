@@ -8,7 +8,7 @@ export const Players = (props) => {
   
   
   let players = [{name: "smith", age: 34}, {name: "sami", age: 29}]
-  addPlayer({name : "lion", age : 22})
+  //addPlayer({name : "lion", age : 22})
 
   //console.log({addPlayer, removePlayer, testProviderApis, getPlayers})
 

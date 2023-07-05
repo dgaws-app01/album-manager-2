@@ -11,6 +11,7 @@ export default function App() {
     <div>
       <h1>Test Comp</h1>
       <TestComp></TestComp>
+      <h1>Players Comp</h1>
       <Players></Players>
       <p>ready ...</p>
     </div>
