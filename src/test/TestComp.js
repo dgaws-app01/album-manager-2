@@ -67,8 +67,8 @@ window.setTimeout(f2, 5000 )
 
 
 export const TestComp = (params) => {
-  let {testReducer} = stores.master.state
-  console.log(testReducer)
+  //let {testReducer} = stores.master.state
+  console.log(stores.master)
   return <>{ JSON.stringify(stores.master.state) }</>
 }
 

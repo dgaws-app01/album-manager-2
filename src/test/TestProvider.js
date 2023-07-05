@@ -35,6 +35,6 @@ export const PlayersProvider = {
   get players(){return stores.master.state?.players},
 
   getPlayers : (x) => { 
-    testProviderApis.getPlayers(x) 
+    //testProviderApis.getPlayers(x) 
   }
 }

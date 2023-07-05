@@ -2,10 +2,10 @@ import React from "react";
 import {PlayersProvider as PP} from './TestProvider'
 
 
-
+const {addPlayer, removePlayer, testProviderApis, getPlayers} = PP
 
 export const Players = (props) => {
-  const {addPlayer, removePlayer, testProviderApis, getPlayers} = PP
+  
   
   let players = [{name: "smith", age: 34}, {name: "sami", age: 29}]
   addPlayer({name : "lion", age : 22})
