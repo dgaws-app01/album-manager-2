@@ -1,3 +1,4 @@
+
 import { addApi, modifyStore, stores } from '../features/providers/masterProvider';
 
 const { addPlayer, removePlayer } = modifyStore({
@@ -25,11 +26,15 @@ const testProviderApis = addApi({
   },
 });
 
-
+console.log({testProviderApis})
 
 export const PlayersProvider = {
   get addPlayer(){return addPlayer}, 
   get removePlayer(){return removePlayer}, 
   get testProviderApis(){return testProviderApis},
-  get players(){return stores.master.state?.players}
+  get players(){return stores.master.state?.players},
+
+  getPlayers : (x) => { 
+    testProviderApis.getPlayers(x) 
+  }
 }
