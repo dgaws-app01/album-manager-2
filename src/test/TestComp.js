@@ -58,8 +58,9 @@ let f2 = function (){ testAction_100({name: "aabbcc", ids: [3,7]}) }
 window.setTimeout(f2, 5000 )
 
 
-
 export const TestComp = (params) => {
-  console.log(stores.master.state)
+  let {testReducer} = stores.master.state
+  console.log(testReducer)
   return <>{ JSON.stringify(stores.master.state) }</>
 }
+
