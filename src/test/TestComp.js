@@ -34,7 +34,8 @@ let stMod2 = modifyStore({
         },
         testAction_100: (payload, state) => {          
           //state.items.push('A')
-          console.log({when:"performing action 'testAction_100", params : {payload, state }})
+          console.log({when:"performing action 'testAction_100", params : {payload, state, players : state.players }})
+          state.players.push({name:"king", age:27})
           state.today = new Date().toDateString()
           
           //return state;
@@ -58,5 +59,6 @@ window.setTimeout(f2, 5000 )
 
 
 export const TestComp = (params) => {
+  console.log(stores.master.state)
   return <>{ JSON.stringify(stores.master.state) }</>
 }

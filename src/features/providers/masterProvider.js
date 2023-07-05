@@ -157,6 +157,7 @@ const modifyStore = (props) => {
 
     const targetStore = (stores[storeName] =
       stores[storeName] || createEmptyStore());
+
     const actions2 = {}
     Object.keys(actions).forEach(actNm => {
       let actF = actions[actNm]
@@ -176,7 +177,7 @@ const modifyStore = (props) => {
 
 
     const retActs = targetStore.addSlice(slice);
-
+    
     return retActs
   }
 };
