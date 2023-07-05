@@ -2,7 +2,7 @@ import React from "react";
 import {PlayersProvider as PP} from './TestProvider'
 
 
-const {addPlayer, removePlayer, testProviderApis, getPlayers} = PP
+const {addPlayer, removePlayer, testProviderApis, getPlayers, useMutation} = PP
 
 export const Players = (props) => {
   
@@ -15,7 +15,7 @@ export const Players = (props) => {
 
 
   return <>We are players .. {JSON.stringify(PP.players)} 
-    <button onClick={(e)=> {getPlayers()}}>abcde</button>
+    <button onClick={(e)=> { console.log(useMutation()) }}>abcde</button>
   </>
 }
 

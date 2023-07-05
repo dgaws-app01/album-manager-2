@@ -26,7 +26,7 @@ const testProviderApis = addApi({
   },
 });
 
-console.log({testProviderApis})
+console.log({useMutation : testProviderApis.endpoints.getPlayers.useMutation})
 
 export const PlayersProvider = {
   get addPlayer(){return addPlayer}, 
@@ -34,7 +34,9 @@ export const PlayersProvider = {
   get testProviderApis(){return testProviderApis},
   get players(){return stores.master.state?.players},
 
+  get useMutation(){return testProviderApis.endpoints.getPlayers.useMutation},
   getPlayers : (x) => { 
+    //return testProviderApis.endpoints.getPlayers.useMutation
     //testProviderApis.getPlayers(x) 
   }
 }
