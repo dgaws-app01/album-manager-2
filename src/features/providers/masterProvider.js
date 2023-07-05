@@ -99,17 +99,19 @@ const createEmptyStore = () => {
     const retActs = {}
     Object.keys(actions).forEach(actNm=>{
       retActs[actNm] = function (payload){
-        const act = actions[actNm]
-        storeElements.dispatcher(act(payload))
+        const act = actions[actNm]        
+        newStore.dispatch(act(payload))
       }
     })
     return retActs
 
   };
+ 
 
   const storeKeeper = {
     get state() {
       return storeElements.selector((state) => state);
+      //return newStore.getState()
     },
     set state(act) {
       //console.log(storeElements)
@@ -153,14 +155,26 @@ const modifyStore = (props) => {
       reducer: { initialState, actions },
     } = $0(store, ['name', 'reducer']);
 
+    const targetStore = (stores[storeName] =
+      stores[storeName] || createEmptyStore());
+    const actions2 = {}
+    Object.keys(actions).forEach(actNm => {
+      let actF = actions[actNm]
+      let actF2 = (state, action) => {
+        let {payload} = action  
+        actF(payload, state)        
+        return state
+      }
+      actions2[actNm] = actF2
+    })
+
     const slice = createSlice({
       name,
       initialState,
-      reducers: actions,
+      reducers: actions2,
     });
 
-    const targetStore = (stores[storeName] =
-      stores[storeName] || createEmptyStore());
+
     const retActs = targetStore.addSlice(slice);
 
     return retActs
