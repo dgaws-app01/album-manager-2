@@ -110,13 +110,10 @@ const createEmptyStore = () => {
 
   const storeKeeper = {
     get state() {
-      return storeElements.selector((state) => state);
-      //return newStore.getState()
+      return storeElements.selector((state) => state);      
     },
     set state(act) {
-      //console.log(storeElements)
-      newStore.dispatch(act)
-      //storeElements.dispatcher(act);
+      newStore.dispatch(act)      
     },
     setStateViaAction(act) {
       newStore.dispatch(act)
@@ -158,13 +155,15 @@ const modifyStore = (props) => {
     const targetStore = (stores[storeName] =
       stores[storeName] || createEmptyStore());
 
-    const actions2 = {}
-    Object.keys(actions).forEach(actNm => {
-      let actF = actions[actNm]
+    const actions2 = {}  
+    Object.keys(actions).forEach(actNm => {  
+      let actF = actions[actNm]  
       let actF2 = (state, action) => {
+        let state2 = JSON.parse(JSON.stringify(state))
+        //console.log(state2)
         let {payload} = action  
-        actF(payload, state)        
-        return state
+        actF(payload, state2)  
+        return state2  
       }
       actions2[actNm] = actF2
     })
