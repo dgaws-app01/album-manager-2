@@ -9,7 +9,7 @@ const { addPlayer, removePlayer } = modifyStore({
         addPlayer: (p, s) => {
           s.players.push(p);
         },
-        removePlayer: (p,s) => {
+        removePlayer: (p, s) => {
           s.players = []
         }
       },
@@ -26,7 +26,7 @@ const testProviderApis = addApi({
   },
 });
 
-console.log({useMutation : testProviderApis.endpoints.getPlayers.useMutation})
+console.log({testProviderApis, useMutation : testProviderApis.endpoints.getPlayers.useMutation})
 
 export const PlayersProvider = {
   get addPlayer(){return addPlayer}, 

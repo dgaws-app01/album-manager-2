@@ -18,7 +18,7 @@ export const Players = (props) => {
   return <>We are players .. {JSON.stringify(PP.players)} 
     <button onClick={(e)=> { 
       console.log({getPlayers, getPlayerStatus }) ;
-      getPlayers()
+      getPlayers({question: {q:"file", id: "aas82"}})
       }}>abcde</button>
   </>
 }
