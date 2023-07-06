@@ -35,7 +35,7 @@ apiSlice.add = (qs) => {
           query: ({ question }) => ({
             //url: `${name || ''}`,
             method: 'POST',
-            body: question,
+            body: JSON.stringify(question),
             responseHandler: respH,
             validateStatus: (response, result) =>
               response.status === 200 && !result.isError,
