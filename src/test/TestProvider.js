@@ -34,7 +34,7 @@ export const PlayersProvider = {
   get testProviderApis(){return testProviderApis},
   get players(){return stores.master.state?.players},
 
-  get useMutation(){return testProviderApis.endpoints.getPlayers.useMutation},
+  get useMutation(){return testProviderApis.endpoints.getPlayers.useQuery},
   getPlayers : (x) => { 
     //return testProviderApis.endpoints.getPlayers.useMutation
     //testProviderApis.getPlayers(x) 

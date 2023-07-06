@@ -10,7 +10,7 @@ export default function App() {
   return (
     <div>
       <h1>Test Comp</h1>
-      <TestComp></TestComp>
+      {/* <TestComp></TestComp> */}
       <h1>Players Comp</h1>
       <Players></Players>
       <p>ready ...</p>

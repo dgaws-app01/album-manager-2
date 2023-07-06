@@ -31,14 +31,14 @@ apiSlice.add = (qs) => {
         let { respH } = apis[endPointName];
         if (!respH) respH = (r) => r.json();
 
-        endPoints[endPointName] = builder.mutation({
+        endPoints[endPointName] = builder.query({ //builder.mutation({
           query: ({ question }) => ({
             //url: `${name || ''}`,
             method: 'POST',
             body: JSON.stringify(question),
-            responseHandler: respH,
-            validateStatus: (response, result) =>
-              response.status === 200 && !result.isError,
+            responseHandler: (r)=> console.log(r)//respH,
+            // validateStatus: (response, result) =>
+            //   response.status === 200 && !result.isError,
           }),
         });
       });
